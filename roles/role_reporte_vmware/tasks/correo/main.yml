@@ -1,0 +1,25 @@
+- set_fact:
+    opcion: |
+      {% if tarea == 'Generar_reporte_VMware' %}
+      ['{{ tskchkenv }}']
+      {% elif tarea == 'Pruebas' %}
+      ['{{ tsktstchk }}']
+      {% else %}
+      ['No_selecciono_ninguna_tarea']
+      {% endif %}
+
+- name: Resultado de tarea seleccion.
+  become: true
+  assert:
+    that:
+      - "'No_selecciono_ninguna_tarea' not in opcion"
+    fail_msg: "No ha seleccionado ninguna opcion o tarea"
+    success_msg: "Ha seleccionado {{ opcion }}"
+  run_once: true
+  delegate_to: localhost
+
+- name: Tarea o tareas que se incluiran para ejecutar:.
+  include_tasks: "{{ tareasA }}.yml"
+  loop: "{{ opcion }}"
+  loop_control:
+    loop_var: tareasA
