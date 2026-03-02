@@ -1,0 +1,8 @@
+---
+- block:
+    - name: Ejecutar reporte de los VMware vCenters
+      shell: ./Inventario_VMware_final.ps1 -User "{{ vmusrdm | trim }}" -Password "{{ vmpwddm | trim }}"
+      args:
+        executable: "{{ padpws }}"
+        chdir: "{{ padrep }}"
+      no_log: true

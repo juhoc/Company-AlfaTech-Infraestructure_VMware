@@ -1,0 +1,10 @@
+---
+- block:
+    - name: Copiar script para obtener reporte vCenter
+      copy:
+        src: "{{ cprsrc }}"
+        dest: "{{ padrep }}"
+        owner: "{{ usrasb }}"
+        group: "{{ grpasb }}"
+        mode: '0744'
+        force: true

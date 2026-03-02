@@ -1,0 +1,41 @@
+---
+- block:
+    - shell: date +%d-%m-%Y-%H-%M-%S
+      register: tskend
+
+    - set_fact:
+        runend: "{{ tskend.stdout | default('No Time') }}"
+
+- block:
+    - name: Enviar correo con el archivo adjunto (HTML) desde lnxsrvb
+      mail:
+        host: "{{ smtpsrv }}"
+        port: "{{ smtpport }}"
+        subject: "Se anexa reporte '{{ reportvm }}'"
+        body: |
+          <html>
+            <body>
+              <p>Por este medio se indica lo siguiente:</p>
+              <p>-------------------------------------</p>
+              <p>Nombre de la plantilla que se ejecuto: <b>bvm_jobtemplate_vmware_vcenter_reporte</b></p>
+              <p>La tarea que se ejecuto: <b>{{ tarea }}</b></p>
+              <p>La tara inicio: <b>{{ runstart }}</b></p>
+              <p>La tarea finalizo: <b>{{ runend }}</b></p>
+              <p>Se anexa el archivo: <b>{{ reportvm }}</b></p>
+              <p> </p>
+              <p> </p>
+              <p>Saludos.</p>
+              <p>Att:<b>Team Automation Center</b></p>
+            </body>
+          </html>
+        subtype: html
+        from: "{{ mailfrom }}"
+        to: "{{ mailto | join(', ') }}"
+        cc: "{{ maillist if (maillist is defined and maillist | length > 0) else omit }}"
+        attach:
+          - "{{ padasb }}/{{ reportvm }}"
+  rescue:
+    - name: Marcar fallo en el servidor delegado lvpapansiblmx01
+      set_fact:
+        fallo_proceso: true
+  delegate_to: lvpapansiblmx01.bvm.bluecare.kyndryl.net

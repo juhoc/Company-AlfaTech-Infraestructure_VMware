@@ -1,0 +1,15 @@
+---
+- block:
+    - name: Borrar repote VMware vCenter del nodo administrado
+      become: true
+      file:
+        path: "{{ padrep }}/{{ reportvm }}"
+        state: absent
+
+- block:
+    - name: Borrar repote VMware vCenter nodo administrado delegado
+      become: true
+      file:
+        path: "{{ padasb }}/{{ reportvm }}"
+        state: absent
+  delegate_to: lvpapansiblmx01.bvm.bluecare.kyndryl.net

@@ -1,0 +1,23 @@
+---
+- name: Bloque de tareas para validar, creas, copiar y ejecutar reportes vCenter
+  block:
+    #    - name: Verificar si existe directorio {{ padrep }} para reportes vCenter
+      #      become: true
+    - stat:
+        path: "{{ padrep }}"
+      register: chkdrvm
+      become: true
+
+    - set_fact:
+        run_playbook: |
+          {% if not chkdrvm.stat.exists %}
+          ['{{ tskmkdir }}','{{ tskcpfle }}','{{ tskexrpt }}']
+          {% elif chkdrvm.stat.exists %}
+          ['{{ tskcpfle }}','{{ tskmkrpt }}']
+          {% endif %}
+
+    - include_tasks: "{{ tareasB }}.yml"
+      loop: "{{ run_playbook }}"
+      loop_control:
+        loop_var: tareasB
+

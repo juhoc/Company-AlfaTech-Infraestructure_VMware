@@ -1,0 +1,22 @@
+---
+- block:
+    - name: Verificar reporte VMware vCenter
+      shell: ls -1rt Inventario_VMware_* | grep -v ps1 | tail -1
+      args:
+       chdir: "{{ padrep }}"
+      register: valfile
+ 
+    - set_fact:
+        reportvm: "{{ valfile.stdout }}"
+
+- block:
+    - name: Fetch repote VMware vCenter al Nodo de Control
+      fetch:
+        src: "{{ padrep }}/{{ reportvm }}"
+        dest: "/tmp/{{ reportvm }}"
+        flat: true
+        fail_on_missing: true
+  rescue:
+    - name: Marcar fallo en el servidor lvpinsatchsmx01
+      set_fact:
+        fallo_proceso: true

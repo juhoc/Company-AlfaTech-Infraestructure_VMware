@@ -1,0 +1,9 @@
+---
+- block:
+    - name: Uso del modulo debug
+      debug:
+        msg: 
+          - "{{ ansible_user }}"
+          - "{{ mailto }}"
+          - "{{ ansible_date_time.date }}"
+          - {{ lookup('pipe', 'date +"%Y-%m-%d %H:%M:%S"') }}'

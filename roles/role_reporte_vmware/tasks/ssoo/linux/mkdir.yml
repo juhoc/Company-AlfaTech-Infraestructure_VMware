@@ -1,0 +1,10 @@
+---
+- block:
+    - name: Crear directorio temporal para reporte de VMware vCenter
+      become: true
+      file:
+        path: "{{ padrep }}"
+        state: directory
+        owner: "{{ usrasb }}"
+        group: "{{ grpasb }}"
+        mode: "0744"

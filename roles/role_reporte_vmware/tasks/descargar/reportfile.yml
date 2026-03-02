@@ -1,0 +1,11 @@
+- block:
+    - name: Descarga repote VMware vCenter al Nodo de Control
+      become: true
+      copy:
+        src: "/tmp/{{ reportvm }}"
+        dest: "{{ padasb }}/{{ reportvm }}"
+        mode: '0644'
+        owner: "{{ usrasb }}"
+        group: "{{ grpasb }}"
+  delegate_to: lvpapansiblmx01.bvm.bluecare.kyndryl.net
+

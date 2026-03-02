@@ -1,0 +1,30 @@
+---
+- block:
+    - shell: date +%d-%m-%Y-%H-%M-%S
+      register: tskstart
+
+    - set_fact:
+        runstart: "{{ tskstart.stdout | default('No Time') }}"
+
+- name: Bloque de tareas para validar, creas, copiar y ejecutar reportes vCenter
+  block:
+    - stat:
+        path: "{{ padrep }}"
+      register: chkdrvm
+      become: true
+
+    - set_fact:
+        run_playbook: |
+          {% if not chkdrvm.stat.exists %}
+          ['{{ tskmkdir }}','{{ tskcpfle }}','{{ tskexrpt }}','{{ tskupfl }}','{{ tskdownfl }}','{{ tsksedmail }}','{{ tskdelfl }}']
+          {% elif chkdrvm.stat.exists %}
+          ['{{ tskcpfle }}','{{ tskexrpt }}','{{ tskupfl }}','{{ tskdownfl }}','{{ tsksedmail }}','{{ tskdelfl }}']
+          {% endif %}
+
+    - include_tasks: "{{ tareasB }}.yml"
+      loop: "{{ run_playbook }}"
+      loop_control:
+        loop_var: tareasB
+
+#          ['{{ tskmkdir }}','{{ tskcpfle }}','{{ tskexrpt }}','{{ tskupfl }}','{{ tskdownfl }}']
+#          ['{{ tskcpfle }}','{{ tskexrpt }}']

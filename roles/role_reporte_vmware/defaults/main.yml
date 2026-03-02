@@ -1,0 +1,42 @@
+#---
+tskchkenv: "ambientar/chkenv"
+tskmkdir: "ssoo/linux/mkdir"
+tskcpfle: "ssoo/linux/cpfle"
+tskexrpt: "ejecutar/reporte/vmware"
+tskchkdir: "ssoo/linux/chkdir"
+cprsrc: "files/Inventario_VMware_final.ps1"
+tsktstchk: "probar/boveda"
+tskupfl: "cargar/reportfile"
+tskdownfl: "descargar/reportfile"
+tsksedmail: "correo/reporte/vmware"
+tskdelfl: "borrar/reporte/vmware"
+#---
+usrasb: "bvmuxat2"
+grpasb: "automate"
+#---
+vmusrdm: "cb\\csico4gt"
+vmpwddm: !vault |
+  $ANSIBLE_VAULT;1.1;AES256
+  64636661626463613662303662626265313362633736313936623938623933613937653761343638
+  3537386666373666373637663136313235646561353932370a663062373536393137363164623236
+  64353934383064646230326536316466386236323836643264613033366636616563386133623738
+  3236323962636330660a303638653439663964323535653565623234356434633332643932303139
+  6438
+#---
+padpws: "/bin/pwsh"
+padasb: "/var/opt/ansible"
+padrep: "/var/opt/ansible/vmware"
+padnct: "/tmp"
+#---
+smtpsrv: "150.100.207.52"
+smtpport: "25"
+mailfrom: "itoperationintegration.mx@bbva.com"
+mailto:
+  - ansintel.mx@bbva.com
+  - adaareli.coria.contractor@bbva.com
+  - josemanuel.alonso.flores.contractor@bbva.com
+  - rodrigo.villordo.contractor@bbva.com
+  - josemiguel.palma.contractor@bbva.com
+  - andres.jurado.castillo.contractor@bbva.com
+  - victor.robles.flores.contractor@bbva.com
+mailcc: "{{ maillist }}"
